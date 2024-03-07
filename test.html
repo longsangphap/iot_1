@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>AUTO CLICK</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      /* background-color: #f4f4f4; */
+      background: linear-gradient(90deg, #C7C5F4, #007bff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #homecontrol .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+      max-width: 700px;
+    }
+
+    .clock-container {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .setting-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .setting-label {
+      margin-right: 10px;
+      color: #333;
+    }
+
+    .setting-input {
+      width: 60px;
+      text-align: center;
+      margin-right: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .setting-checkbox {
+      margin-left: 10px;
+      margin-right: 10px;
+      transform: scale(1.5);
+    }
+
+    .time-input {
+      padding: 8px 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .setting-button {
+      margin-top: 10px;
+      cursor: pointer;
+      padding: 8px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      margin: 0 10px;
+    }
+
+    .setting-number {
+      width: 5%;
+      text-align: center;
+    }
+
+    .setting-button:hover {
+      background-color: #0056b3;
+    }
+
+    #clock-display {
+      font-size: 43px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    #selected-settings {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #28a745;
+    }
+
+    .mode-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .mode-container button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .mode-container button:hover {
+      background-color: #218838;
+    }
+
+    .mode-select {
+      width: 150px;
+      /* Điều chỉnh độ rộng của ô chọn mode */
+    }
+
+    .error-message {
+      color: #dc3545;
+      margin-top: 10px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      margin-top: 10px;
+    }
+
+    option {
+      padding: 5px;
+    }
+
+    #settings-container {
+      display: grid;
+      gap: 5px;
+    }
+
+    .settings-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      /* Khoảng cách giữa các dropdown */
+      margin-bottom: 20px;
+      padding-top: 20px;
+      /* background-color: white; */
+      /* border-radius: 10px; */
+      /* border: 1px solid #ccc; */
+      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    }
+
+    select {
+      padding: 10px;
+      width: 100%;
+      /* Dropdown chiếm toàn bộ chiều rộng của ô container */
+      border: 1px solid #ccc;
+      /* Đường viền */
+      border-radius: 10px;
+      /* Góc bo tròn */
+    }
+
+    .mode-section {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .mode-section label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .empty-space {
+      width: 20px;
+      /* Điều chỉnh kích thước theo mong muốn */
+    }
+
+    .table-row {
+      display: flex;
+      flex-direction: row;
+      /* display: grid;
+  grid-template-columns: repeat(5, 1fr); */
+      background-color: #3498db;
+      color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      justify-content: space-between;
+      /* width: 500px; */
+      /* Độ rộng của hàng */
+      /* height: 30px; */
+      /* Chiều cao của hàng */
+    }
+
+    .table-cell {
+      padding: 10px;
+      text-align: center;
+      border-right: 1px solid #ddd;
+      /* Căn giữa theo chiều dọc */
+      width: 100%;
+    }
+
+    /* Chỉ định độ dài cụ thể cho từng ô */
+    .table-cell:nth-child(1) {
+      /* grid-area: 2; */
+      width: 5%;
+      /* Độ rộng cho ô Giờ */
+    }
+
+    .table-cell:nth-child(2) {
+      /* grid-area: 1; */
+      width: 25%;
+      /* Độ rộng cho ô Chu kì */
+    }
+
+    .table-cell:nth-child(3) {
+      /* grid-area: 2; */
+      width: 20%;
+      /* Độ rộng cho ô Mode */
+    }
+
+    .table-cell:nth-child(4) {
+      /* grid-area: 1;   */
+      width: 20%;
+      /* Độ rộng cho ô Kích hoạt */
+    }
+
+    .table-cell:last-child {
+      width: 17%;
+      border-right: none;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: #3498db;
+      color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .btn-cell {
+      padding: 10px;
+      text-align: center;
+      border-right: 1px solid #ddd;
+      width: 100%;
+    }
+
+    .btn-setting-row {
+      display: flex;
+
+    }
+
+    .btn-id {
+      /* padding-top: 10px; */
+      top: 10px;
+      left: -26px;
+    }
+
+    .btn-number {
+      padding: 85% 0;
+    }
+
+    #homecontrol {
+      height: 100%;
+    }
+
+    #wifisetup {
+      background-color: #fff;
+      padding: 20px;
+      padding-left: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 10px 0;
+      max-width: 700px;
+    }
+
+    .btn-setting {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Raleway, sans-serif;
+    }
+
+    #login-page .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .screen {
+      background: linear-gradient(90deg, #5D54A4, #3498db);
+      position: relative;
+      height: 600px;
+      width: 360px;
+      box-shadow: 0px 0px 24px #5C5696;
+    }
+
+    .screen__content {
+      z-index: 1;
+      position: relative;
+      height: 100%;
+    }
+
+    .screen__background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      -webkit-clip-path: inset(0 0 0 0);
+      clip-path: inset(0 0 0 0);
+    }
+
+    .screen__background__shape {
+      transform: rotate(45deg);
+      position: absolute;
+    }
+
+    .screen__background__shape1 {
+      height: 520px;
+      width: 520px;
+      background: #FFF;
+      top: -50px;
+      right: 120px;
+      border-radius: 0 72px 0 0;
+    }
+
+    .screen__background__shape2 {
+      height: 220px;
+      width: 220px;
+      background: #007bff;
+      top: -172px;
+      right: 0;
+      border-radius: 32px;
+    }
+
+    .screen__background__shape3 {
+      height: 540px;
+      width: 190px;
+      background: linear-gradient(270deg, #007bff, #6A679E);
+      top: -24px;
+      right: 0;
+      border-radius: 32px;
+    }
+
+    .screen__background__shape4 {
+      height: 400px;
+      width: 200px;
+      background: #007bff;
+      top: 420px;
+      right: 50px;
+      border-radius: 60px;
+    }
+
+    .login {
+      width: 320px;
+      padding: 30px;
+      padding-top: 156px;
+    }
+
+    .login__field {
+      padding: 20px 0px;
+      position: relative;
+    }
+
+    .login__icon {
+      position: absolute;
+      top: 30px;
+      color: #7875B5;
+    }
+
+    .login__input {
+      border: none;
+      border-bottom: 2px solid #D1D1D4;
+      background: none;
+      padding: 10px;
+      padding-left: 24px;
+      font-weight: 700;
+      width: 75%;
+      transition: .2s;
+    }
+
+    .login__input:active,
+    .login__input:focus,
+    .login__input:hover {
+      outline: none;
+      border-bottom-color: #6A679E;
+    }
+
+    .login__submit {
+      background: #fff;
+      font-size: 14px;
+      margin-top: 30px;
+      padding: 16px 20px;
+      border-radius: 26px;
+      border: 1px solid #D4D3E8;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      width: 50%;
+      color: #007bff;
+      box-shadow: 0px 2px 2px #5C5696;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .login__submit:active,
+    .login__submit:focus,
+    .login__submit:hover {
+      border-color: #6A679E;
+      outline: none;
+    }
+
+    .button__icon {
+      font-size: 24px;
+      margin-left: auto;
+      color: #7875B5;
+    }
+
+    .toggle-password {
+      font-size: 14px;
+      font-weight: 700;
+      position: absolute;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="login-page">
+    <div class="container">
+      <div class="screen">
+        <div class="screen__content">
+          <form class="login">
+            <div class="login__field">
+              <!-- <i class="login__icon fas fa-user"></i> -->
+              <!-- <input type="text" class="login__input" placeholder="User name / Email"> -->
+            </div>
+            <div class="login__field">
+              <i class="login__icon fas fa-lock"></i>
+              <input id="password" type="password" class="login__input" placeholder="Mật Khẩu">
+              <span class="toggle-password" onclick="togglePasswordVisibility()">Hiện</span>
+            </div>
+            <button id="login-btn" class="button login__submit">
+              <span class="button__text">Đăng Nhập</span>
+              <i class="button__icon fas fa-chevron-right"></i>
+            </button>
+          </form>
+          <!-- <div class="social-login">
+                <h3>log in via</h3>
+                <div class="social-icons">
+                  <a href="#" class="social-login__icon fab fa-instagram"></a>
+                  <a href="#" class="social-login__icon fab fa-facebook"></a>
+                  <a href="#" class="social-login__icon fab fa-twitter"></a>
+                </div>
+              </div> -->
+        </div>
+        <div class="screen__background">
+          <span class="screen__background__shape screen__background__shape4"></span>
+          <span class="screen__background__shape screen__background__shape3"></span>
+          <span class="screen__background__shape screen__background__shape2"></span>
+          <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="content">
+    <div id="homecontrol" style="display: none;">
+      <div class="container">
+        <div class="clock-container">
+          <div id="clock-display">12:00</div>
+          <div class="clock-setup">
+            <label for="hour">Cài đặt thời gian</label>
+            <br>
+            <input class="time-input" type="number" id="hour" placeholder="Giờ" min="0" max="23">
+            <span>:</span>
+            <input class="time-input" type="number" id="minute" placeholder="Phút" min="0" max="59">
+            <button onclick="updateClock()" class="setting-button">Cập nhật</button>
+          </div>
+        </div>
+
+
+
+        <div id="settings-container">
+          <div class="table-row">
+            <div class="table-cell">ID</div>
+            <div class="table-cell">Thời gian</div>
+            <div class="table-cell">Chu kì</div>
+            <div class="table-cell">Chế độ</div>
+            <div class="table-cell">Kích hoạt</div>
+          </div>
+          <!-- thêm 10 phần cài đặt -->
+        </div>
+
+        <div class="mode-container">
+          <div>
+            <button onclick="startTimer()">Lưu cấu hình</button>
+            <button onclick="configurewifi()">Thiết lập Mode</button>
+          </div>
+          <div id="selected-settings"></div>
+          <div id="error-message" class="error-message"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="wifisetup" style="font-size:20px; display:none; margin-top: 20px;" ;>
+      <div class="mode-section">
+        <label for="mode-dropdown">Chế độ cần thiết lập: </label>
+        <select id="mode-dropdown" onchange="modeChange(this)">
+          <option value="A">Mode A</option>
+          <option value="B">Mode B</option>
+          <option value="C">Mode C</option>
+          <option value="D">Mode D</option>
+          <option value="E">Mode E</option>
+          <option value="F">Mode F</option>
+          <option value="G">Mode G</option>
+          <option value="H">Mode H</option>
+          <option value="I">Mode I</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <div class="btn-cell">1</div>
+        <div class="btn-cell">2</div>
+        <div class="btn-cell">3</div>
+        <div class="btn-cell">4</div>
+      </div>
+
+      <!-- 10 Hàng Cài đặt -->
+
+      <div class="settings-container" id="A" style="position: relative;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="B" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="C" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="D" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="E" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="F" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="G" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="H" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="I" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="btn-setting">
+        <button onclick="applySettings()" class="setting-button">Áp dụng</button>
+        <button onclick="backHOME()" class="setting-button">Quay lại</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // biến
+    const login_btn = document.getElementById('login-btn')
+    const password = document.getElementById('password')
+    const login_page = document.getElementById('login-page')
+    const homecontrol = document.getElementById('homecontrol')
+    const wifisetup = document.getElementById('wifisetup')
+
+
+    //-----------Hàm khởi tạo đối tượng request----------------
+    function create_obj() {
+      var td = navigator.appName;
+      var obj;
+      if (td == "Microsoft Internet Explorer") {
+        obj = new ActiveXObject("Microsoft.XMLHTTP");
+      } else {
+        obj = new XMLHttpRequest();
+      }
+      return obj;
+    }
+
+    //------------Khởi tạo biến toàn cục-----------------------------
+    var xhttp = create_obj(); // Đối tượng request cho setup wifi
+    var xhttp_statusD = create_obj(); // Đối tượng request cho cập nhật trạng thái
+    var d1, d2, d3, d4, u, h;
+
+    //-----------Gửi yêu cầu lấy trạng thái các chân D-----------------
+    function getstatusD() {
+      xhttp_statusD.open("GET", "/getSTATUSD", true);
+      xhttp_statusD.onreadystatechange = process_statusD;
+      xhttp_statusD.send();
+    }
+
+    //------Update trạng thái led tín hiệu lên panel điều khiển----
+    function process_statusD() {
+      if (xhttp_statusD.readyState == 4 && xhttp_statusD.status == 200) {
+        //------Update trạng thái led tín hiệu lên panel điều khiển----
+        var statusD = xhttp_statusD.responseText;
+        var obj = JSON.parse(statusD);
+        d1 = obj.H;
+        d2 = obj.M;
+        updateLedstatus(d1, d2);
+      }
+    }
+
+    //----------Hiển thị trạng thái Led lên trình duyệt---------------------
+    function updateLedstatus(D1, D2) {
+      document.getElementById("hour").value = D1;
+      document.getElementById("minute").value = D2;
+    }
+
+    //-----------Kiểm tra response -------------------------------------------
+    function process() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        //------Updat data sử dụng javascript----------
+        var ketqua = xhttp.responseText;
+        document.getElementById("reponsetext").innerHTML = ketqua;
+      }
+    }
+
+    //--------Load lại trang để quay về Home control-------------------------
+    function backHOME() {
+      login_page.style.display = 'none';
+      homecontrol.style.display = "block";
+      wifisetup.style.display = "none";
+      deleteBtnSettingRow();
+    }
+
+    //============Hàm thực hiện chứ năng khác================================
+    //--------Cập nhật trạng thái tự động sau 2 giây----------------------
+    setInterval(function () {
+      getstatusD();
+    }, 2000);
+
+    //----------------------------CHECK EMPTY--------------------------------
+    function Empty(element, AlertMessage) {
+      if (element.value.trim() == "") {
+        alert(AlertMessage);
+        element.focus();
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    //===========Configure WiFi=====================================
+    function configurewifi() {
+      document.getElementById("homecontrol").style.display = "none";
+      document.getElementById("wifisetup").style.display = "block";
+      for (let i = 0; i < 40; i++) {
+        createBtnSettingRow(i);
+      }
+
+    }
+
+    function updateClock() {
+      const hourInput = document.getElementById("hour").value;
+      const minuteInput = document.getElementById("minute").value;
+
+      const isValidInput = /^\d{1,2}$/.test(hourInput) && /^\d{1,2}$/.test(minuteInput);
+
+      if (isValidInput) {
+        const formattedHour = hourInput.padStart(2, "0");
+        const formattedMinute = minuteInput.padStart(2, "0");
+        const formattedTime = `${formattedHour}:${formattedMinute}`;
+
+        document.getElementById("clock-display").innerText = formattedTime;
+      } else {
+        alert("Vui lòng nhập giờ và phút hợp lệ.");
+      }
+    }
+
+    function createSettingRow(index) {
+      const container = document.getElementById("settings-container");
+
+      const settingRow = document.createElement("div");
+      settingRow.className = "setting-row";
+
+      // <div style="display:flex; width:30%;">
+      // </div>
+      settingRow.innerHTML = `
+  <div class="setting-number">${index + 1}</div>
+  <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ">
+  <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút">
+  <input class="setting-input" type="number" id="repeat-${index}" placeholder="Ngày" style="width:20%;">
+  <select class="setting-input mode-select" id="mode-${index}" style="width:20%">
+    <option value="A">Mode A</option>
+    <option value="B">Mode B</option>
+    <option value="C">Mode C</option>
+    <option value="D">Mode D</option>
+    <option value="E">Mode E</option>
+    <option value="F">Mode F</option>
+    <option value="G">Mode G</option>
+    <option value="H">Mode H</option>
+    <option value="I">Mode I</option>              
+  </select>
+  <div style="width:20%">
+    <input class="setting-checkbox" type="checkbox" id="save-settings-${index}"/>
+    <label class="setting-label" for="save-settings-${index}">Lưu ${index + 1}</label>
+  </div>
+  `;
+      function generateHourOptions() {
+        let options = ''
+        for (let hour = 1; hour < 24; hour++) {
+          options += `<option value="${hour}">${hour}</option>`;
+        }
+        return options;
+      }
+      function generateMinuteOptions() {
+        let options = ''
+        for (let minute = 1; minute < 60; minute++) {
+          options += `<option value="${minute}">${minute}</option>`;
+        }
+        return options;
+      }
+      container.appendChild(settingRow);
+    }
+    // btn setting element
+    function createBtnSettingRow(index) {
+      const container = document.querySelectorAll(".settings-container");
+      container.forEach((element) => {
+        const settingRow = document.createElement("div");
+        settingRow.className = "btn-setting-row";
+        settingRow.innerHTML = `
+    <select class="dropdown" id="dropdown${index + 1}">
+      <option value="0">Không nhấn</option>
+      <option value="1">Nhấn nhả</option>
+      <option value="2">Nhấn giữ</option>
+    </select>
+    `;
+        element.appendChild(settingRow);
+      })
+    }
+    function deleteBtnSettingRow() {
+      const container = document.querySelectorAll('.btn-setting-row');
+      container.forEach((element) => {
+        element.remove();
+      })
+    }
+
+    function startTimer() {
+      const selectedSettingsContainer = document.getElementById("selected-settings");
+      const errorMessageElement = document.getElementById("error-message");
+      errorMessageElement.innerText = ""; // Xóa thông báo lỗi trước khi kiểm tra mới
+      let isSaveSettingsChecked = document.querySelectorAll('.setting-checkbox');
+      // Lặp qua 10 phần cài đặt để lấy thông tin
+      let modeArray = []
+      let runTimeHourArray = []
+      let runTimeMinuteArray = []
+      let repeatCountArray = []
+      for (let i = 0; i < 10; i++) {
+        let selectedModeId = 'mode-' + i
+        let runTimeHourInputId = 'run-time-hour-' + i
+        let runTimeMinuteInputId = 'run-time-minute-' + i
+        let repeatCountId = 'repeat-' + i
+        let runTimeHourInput = document.getElementById(runTimeHourInputId).value;
+        let runTimeMinuteInput = document.getElementById(runTimeMinuteInputId).value;
+        let selectedMode = document.getElementById(selectedModeId).value;
+        let repeatCount = document.getElementById(repeatCountId).value;
+        // Thêm phần tử vào mảng
+        modeArray.push(selectedMode)
+        runTimeHourArray.push(runTimeHourInput)
+        runTimeMinuteArray.push(runTimeMinuteInput)
+        repeatCountArray.push(repeatCount)
+        // Hàm gửi thông tin cài đặt
+        function send(id) {
+          var xhttp = new XMLHttpRequest();
+          xhttp.open("GET", `/send_${id + 1}?mode=` + modeArray[id] + "&hour=" + runTimeHourArray[id] + "&minute=" + runTimeMinuteArray[id] + "&date=" + repeatCountArray[id], true);
+          xhttp.onreadystatechange = process;
+          xhttp.send();
+        }
+      }
+      // Hàm gửi checkbox
+      function send_check() {
+        let checks = []
+        isSaveSettingsChecked.forEach((element) => {
+          if (element.checked) {
+            checks.push(1)
+          } else {
+            checks.push(0)
+          }
+        })
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/send_checkbox?checkbox1=" + checks[0] + "&checkbox2=" + checks[1] + "&checkbox3=" + checks[2] + "&checkbox4=" + checks[3] + "&checkbox5=" + checks[4] + "&checkbox6=" + checks[5] + "&checkbox7=" + checks[5] + "&checkbox8=" + checks[7] + "&checkbox9=" + checks[8] + "&checkbox10=" + checks[9], true);
+        xhttp.onreadystatechange = process;
+        xhttp.send();
+      }
+      let checks = []
+      isSaveSettingsChecked.forEach((e) => {
+        if (e.checked) {
+          checks.push(e)
+        }
+
+      })
+      send_check()
+      checks.forEach((e) => {
+        let id = parseInt(e.id.replace('save-settings-', ''))
+        // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
+        if (checks && (runTimeHourArray[id] > 23 || runTimeHourArray[id] < 0 || runTimeMinuteArray[id] < 0 || runTimeMinuteArray[id] > 59 || repeatCountArray[id] <= 0)) {
+          const errorElement = document.createElement('div')
+          errorElement.innerText = `Vui lòng nhập đúng định dạng thời gian cho cài đặt ${id + 1}`;
+          errorMessageElement.appendChild(errorElement)
+          return
+        }
+        if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
+          const errorElement = document.createElement('div')
+          errorElement.innerText = `Vui lòng nhập giờ chạy cho cài đặt ${id + 1}`;
+          errorMessageElement.appendChild(errorElement)
+          return
+        }
+        if (id === 0) {
+          send(id);
+        } else if (id === 1) {
+          send(id);
+        } else if (id === 2) {
+          send(id)
+        } else if (id === 3) {
+          send(id)
+        } else if (id === 4) {
+          send(id);
+        } else if (id === 5) {
+          send(id)
+        } else if (id === 6) {
+          send(id)
+        } else if (id === 7) {
+          send(id);
+        } else if (id === 8) {
+          send(id)
+        } else if (id === 9) {
+          send(id)
+        }
+
+        const settingInfo = `Cài đặt ${id + 1} - Giờ Chạy ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Số lần lặp lại ${repeatCountArray[id]}`;
+        const settingInfoElement = document.createElement("div");
+        settingInfoElement.innerText = settingInfo;
+        selectedSettingsContainer.appendChild(settingInfoElement);
+        setInterval(() => {
+          settingInfoElement.remove()
+        }, 5000)
+      })
+    }
+
+    // Tạo 10 phần cài đặt khi trang web được tải
+    document.addEventListener("DOMContentLoaded", function () {
+      for (let i = 0; i < 10; i++) {
+        createSettingRow(i);
+      }
+    });
+
+
+    // Hàm kiểm tra đăng nhập
+    login_btn.addEventListener('click', (e) => {
+      e.preventDefault()
+      if (password.value === 'iot1234') {
+        login_page.style.display = 'none';
+        homecontrol.style.display = "block";
+        getstatusD()
+      }
+    })
+    // Hàm ẩn hiện mật khẩu
+    function togglePasswordVisibility() {
+      var passwordInput = document.getElementById("password");
+      var toggleIcon = document.querySelector(".toggle-password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.textContent = "Ẩn"; // Hiển thị biểu tượng mở mắt
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.textContent = "Hiện"; // Hiển thị biểu tượng đóng mắt
+      }
+    }
+
+    // wifisetup page
+    function applySettings() {
+      const modeDropdown = document.getElementById("mode-dropdown").value;
+      const dropdown = document.querySelectorAll(".dropdown");
+      let buttons = []
+      var startValue = 0
+      if (modeDropdown === "B") {
+        startValue = 10
+      } else if (modeDropdown === "C") {
+        startValue = 20
+      } else if (modeDropdown === "D") {
+        startValue = 30
+      } else if (modeDropdown === "E") {
+        startValue = 40
+      } else if (modeDropdown === "F") {
+        startValue = 50
+      } else if (modeDropdown === "G") {
+        startValue = 60
+      } else if (modeDropdown === "H") {
+        startValue = 70
+      } else if (modeDropdown === "I") {
+        startValue = 80
+      }
+      dropdown.forEach((e) => {
+        buttons.push(e.value)
+      })
+      function send_case() {
+        var xhttp = new XMLHttpRequest();
+        var url = "/send_case?mode=" + modeDropdown
+        for (var i = startValue; i < startValue + 10; i++) {
+          var caseParams = buttons.slice(i * 4, (i + 1) * 4).join('/')
+          url += "&case" + (i - startValue + 1) + "=" + `${caseParams}`
+        }
+        xhttp.open("GET", url, true);
+        xhttp.onreadystatechange = process;
+        xhttp.send();
+      }
+      send_case();
+    }
+    function modeChange(e) {
+      const container = document.querySelectorAll(".settings-container");
+      let elements = []
+      container.forEach((e) => {
+        elements.push(e)
+      })
+      if (e.value === "A") {
+        elements[0].style.display = "grid"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+
+      } else if (e.value === "B") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "grid"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "C") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "grid"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "D") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "grid"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "E") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "grid"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "F") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "grid"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "G") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "grid"
+        elements[7].style.display = "none"
+        elements[8].style.display = "none"
+      } else if (e.value === "H") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "grid"
+        elements[8].style.display = "none"
+      } else if (e.value === "I") {
+        elements[0].style.display = "none"
+        elements[1].style.display = "none"
+        elements[2].style.display = "none"
+        elements[3].style.display = "none"
+        elements[4].style.display = "none"
+        elements[5].style.display = "none"
+        elements[6].style.display = "none"
+        elements[7].style.display = "none"
+        elements[8].style.display = "grid"
+      }
+
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>AUTO CLICK</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div id="login-page">
+    <div class="container">
+      <div class="screen">
+        <div class="screen__content">
+          <form class="login">
+            <div class="login__field">
+              <!-- <i class="login__icon fas fa-user"></i> -->
+              <!-- <input type="text" class="login__input" placeholder="User name / Email"> -->
+            </div>
+            <div class="login__field">
+              <i class="login__icon fas fa-lock"></i>
+              <input id="password" type="password" class="login__input" placeholder="Mật Khẩu">
+              <span class="toggle-password" onclick="togglePasswordVisibility()">Hiện</span>
+            </div>
+            <button id="login-btn" class="button login__submit">
+              <span class="button__text">Đăng Nhập</span>
+              <i class="button__icon fas fa-chevron-right"></i>
+            </button>
+          </form>
+          <!-- <div class="social-login">
+                <h3>log in via</h3>
+                <div class="social-icons">
+                  <a href="#" class="social-login__icon fab fa-instagram"></a>
+                  <a href="#" class="social-login__icon fab fa-facebook"></a>
+                  <a href="#" class="social-login__icon fab fa-twitter"></a>
+                </div>
+              </div> -->
+        </div>
+        <div class="screen__background">
+          <span class="screen__background__shape screen__background__shape4"></span>
+          <span class="screen__background__shape screen__background__shape3"></span>
+          <span class="screen__background__shape screen__background__shape2"></span>
+          <span class="screen__background__shape screen__background__shape1"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="content">
+    <div id="homecontrol" style="display: none;">
+      <div class="container">
+        <div class="clock-container">
+          <div id="clock-display">12:00</div>
+          <div class="clock-setup">
+            <label for="hour">Cài đặt thời gian</label>
+            <br>
+            <input class="time-input" type="number" id="hour" placeholder="Giờ" min="0" max="23">
+            <span>:</span>
+            <input class="time-input" type="number" id="minute" placeholder="Phút" min="0" max="59">
+            <button onclick="updateClock()" class="setting-button">Cập nhật</button>
+          </div>
+        </div>
+
+
+
+        <div id="settings-container">
+          <div class="table-row">
+            <div class="table-cell">ID</div>
+            <div class="table-cell">Thời gian</div>
+            <div class="table-cell">Chu kì</div>
+            <div class="table-cell">Chế độ</div>
+            <div class="table-cell">Kích hoạt</div>
+          </div>
+          <!-- thêm 10 phần cài đặt -->
+        </div>
+
+        <div class="mode-container">
+          <div>
+            <button onclick="startTimer()">Lưu cấu hình</button>
+            <button onclick="configurewifi()">Thiết lập Mode</button>
+          </div>
+          <div id="selected-settings"></div>
+          <div id="error-message" class="error-message"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="wifisetup" style="font-size:20px; display:none; margin-top: 20px;" ;>
+      <div class="mode-section">
+        <label for="mode-dropdown">Chế độ cần thiết lập: </label>
+        <select id="mode-dropdown" onchange="modeChange(this)">
+          <option value="A">Mode A</option>
+          <option value="B">Mode B</option>
+          <option value="C">Mode C</option>
+          <option value="D">Mode D</option>
+          <option value="E">Mode E</option>
+          <option value="F">Mode F</option>
+          <option value="G">Mode G</option>
+          <option value="H">Mode H</option>
+          <option value="I">Mode I</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <div class="btn-cell">1</div>
+        <div class="btn-cell">2</div>
+        <div class="btn-cell">3</div>
+        <div class="btn-cell">4</div>
+      </div>
+
+      <!-- 10 Hàng Cài đặt -->
+
+      <div class="settings-container" id="A" style="position: relative;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="B" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="C" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="D" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="E" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="F" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="G" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="H" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="settings-container" id="I" style="position: relative; display: none;">
+        <div class="btn-id" style="position: absolute;">
+          <div class="btn-number">1</div>
+          <div class="btn-number">2</div>
+          <div class="btn-number">3</div>
+          <div class="btn-number">4</div>
+          <div class="btn-number">5</div>
+          <div class="btn-number">6</div>
+          <div class="btn-number">7</div>
+          <div class="btn-number">8</div>
+          <div class="btn-number">9</div>
+          <div class="btn-number">10</div>
+        </div>
+      </div>
+      <div class="btn-setting">
+        <button onclick="applySettings()" class="setting-button">Áp dụng</button>
+        <button onclick="backHOME()" class="setting-button">Quay lại</button>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+
+</html>
