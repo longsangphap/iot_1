@@ -326,7 +326,6 @@
       for (let i = 0; i < 40; i++) {
         createBtnSettingRow(i);
       }
-
     }
 
     function updateClock() {
@@ -352,12 +351,8 @@
 
     function createSettingRow(index) {
       const container = document.getElementById("settings-container");
-
       const settingRow = document.createElement("div");
       settingRow.className = "setting-row";
-
-      // <div style="display:flex; width:30%;">
-      // </div>
       settingRow.innerHTML = `
   <div class="setting-number">${index + 1}</div>
   <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ">
@@ -379,20 +374,6 @@
     <label class="setting-label" for="save-settings-${index}">Lưu ${index + 1}</label>
   </div>
   `;
-      function generateHourOptions() {
-        let options = ''
-        for (let hour = 1; hour < 24; hour++) {
-          options += `<option value="${hour}">${hour}</option>`;
-        }
-        return options;
-      }
-      function generateMinuteOptions() {
-        let options = ''
-        for (let minute = 1; minute < 60; minute++) {
-          options += `<option value="${minute}">${minute}</option>`;
-        }
-        return options;
-      }
       container.appendChild(settingRow);
     }
     // btn setting element
@@ -687,9 +668,7 @@
         elements[7].style.display = "none"
         elements[8].style.display = "grid"
       }
-
     }
-
   </script>
 </body>
 
