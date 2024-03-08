@@ -10,7 +10,6 @@
 
     body {
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      /* background-color: #f4f4f4; */
       background: linear-gradient(90deg, #C7C5F4, #007bff);
       display: flex;
       flex-direction: column;
@@ -53,12 +52,6 @@
       padding: 5px;
       border: 1px solid #ccc;
       border-radius: 5px;
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
     }
 
     .setting-checkbox {
@@ -131,7 +124,6 @@
 
     .mode-select {
       width: 150px;
-      /* Điều chỉnh độ rộng của ô chọn mode */
     }
 
     .error-message {
@@ -157,23 +149,15 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-      /* Khoảng cách giữa các dropdown */
       margin-bottom: 20px;
       padding-top: 20px;
-      /* background-color: white; */
-      /* border-radius: 10px; */
-      /* border: 1px solid #ccc; */
-      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
     }
 
     select {
       padding: 10px;
       width: 100%;
-      /* Dropdown chiếm toàn bộ chiều rộng của ô container */
       border: 1px solid #ccc;
-      /* Đường viền */
       border-radius: 10px;
-      /* Góc bo tròn */
     }
 
     .mode-section {
@@ -188,14 +172,11 @@
 
     .empty-space {
       width: 20px;
-      /* Điều chỉnh kích thước theo mong muốn */
     }
 
     .table-row {
       display: flex;
       flex-direction: row;
-      /* display: grid;
-  grid-template-columns: repeat(5, 1fr); */
       background-color: #3498db;
       color: #fff;
       border: 1px solid #ddd;
@@ -203,10 +184,6 @@
       overflow: hidden;
       margin-bottom: 10px;
       justify-content: space-between;
-      /* width: 500px; */
-      /* Độ rộng của hàng */
-      /* height: 30px; */
-      /* Chiều cao của hàng */
     }
 
     .table-cell {
@@ -219,27 +196,19 @@
 
     /* Chỉ định độ dài cụ thể cho từng ô */
     .table-cell:nth-child(1) {
-      /* grid-area: 2; */
       width: 5%;
-      /* Độ rộng cho ô Giờ */
     }
 
     .table-cell:nth-child(2) {
-      /* grid-area: 1; */
       width: 25%;
-      /* Độ rộng cho ô Chu kì */
     }
 
     .table-cell:nth-child(3) {
-      /* grid-area: 2; */
       width: 20%;
-      /* Độ rộng cho ô Mode */
     }
 
     .table-cell:nth-child(4) {
-      /* grid-area: 1;   */
-      width: 20%;
-      /* Độ rộng cho ô Kích hoạt */
+      width: 20%
     }
 
     .table-cell:last-child {
@@ -468,8 +437,6 @@
         <div class="screen__content">
           <form class="login">
             <div class="login__field">
-              <!-- <i class="login__icon fas fa-user"></i> -->
-              <!-- <input type="text" class="login__input" placeholder="User name / Email"> -->
             </div>
             <div class="login__field">
               <i class="login__icon fas fa-lock"></i>
@@ -481,14 +448,6 @@
               <i class="button__icon fas fa-chevron-right"></i>
             </button>
           </form>
-          <!-- <div class="social-login">
-                <h3>log in via</h3>
-                <div class="social-icons">
-                  <a href="#" class="social-login__icon fab fa-instagram"></a>
-                  <a href="#" class="social-login__icon fab fa-facebook"></a>
-                  <a href="#" class="social-login__icon fab fa-twitter"></a>
-                </div>
-              </div> -->
         </div>
         <div class="screen__background">
           <span class="screen__background__shape screen__background__shape4"></span>
