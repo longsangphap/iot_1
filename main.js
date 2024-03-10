@@ -44,8 +44,7 @@ function process_statusD() {
 
 //----------Hiển thị trạng thái Led lên trình duyệt---------------------
 function updateLedstatus(D1, D2) {
-  document.getElementById("hour").value = D1;
-  document.getElementById("minute").value = D2;
+  document.getElementById("clock-display").innerText = D1;
 }
 
 //-----------Kiểm tra response -------------------------------------------
