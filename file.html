@@ -467,22 +467,18 @@
       const dropdown = document.querySelectorAll(".dropdown");
       let buttons = []
       var startValue = 0
-      if (modeDropdown === "B") {
-        startValue = 10
-      } else if (modeDropdown === "C") {
-        startValue = 20
-      } else if (modeDropdown === "D") {
-        startValue = 30
-      } else if (modeDropdown === "E") {
-        startValue = 40
-      } else if (modeDropdown === "F") {
-        startValue = 50
-      } else if (modeDropdown === "G") {
-        startValue = 60
-      } else if (modeDropdown === "H") {
-        startValue = 70
-      } else if (modeDropdown === "I") {
-        startValue = 80
+      const modeMappings = {
+        "B": 10,
+        "C": 20,
+        "D": 30,
+        "E": 40,
+        "F": 50,
+        "G": 60,
+        "H": 70,
+        "I": 80
+      };
+      if (modeMappings.hasOwnProperty(modeDropdown)) {
+        startValue = modeMappings[modeDropdown];
       }
       dropdown.forEach((e) => {
         buttons.push(e.value)
@@ -502,7 +498,6 @@
     }
     function modeChange(e) {
       const container = document.querySelectorAll(".settings-container");
-      console.log(container);
       let elements = []
       container.forEach((e) => {
         elements.push(e)
