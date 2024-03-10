@@ -1011,6 +1011,12 @@
         xhttp.send();
       }
       send_case();
+      toast({
+        title: "Cập nhật thành công",
+        message: `Cài đặt Mode ${modeDropdown} thành công`,
+        type: "success",
+        duration: 2000
+      })
     }
     function modeChange(e) {
       const container = document.querySelectorAll(".settings-container");
