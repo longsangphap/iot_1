@@ -6,10 +6,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    @import url(https://fonts.googleapis.com/css?family=Raleway:400,700);
-
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       background: linear-gradient(90deg, #C7C5F4, #007bff);
       display: flex;
       flex-direction: column;
@@ -423,10 +421,118 @@
       transform: translateY(-50%);
       cursor: pointer
     }
+
+    /* toast */
+    #toast {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 999999;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 2px;
+      padding: 20px 0;
+      min-width: 400px;
+      max-width: 450px;
+      border-left: 4px solid;
+      box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+      transition: all linear 0.3s;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(calc(100% + 32px));
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
+
+    .toast--success {
+      border-color: #47d864;
+    }
+
+    .toast--success .toast__icon {
+      color: #47d864;
+    }
+
+    .toast--info {
+      border-color: #2f86eb;
+    }
+
+    .toast--info .toast__icon {
+      color: #2f86eb;
+    }
+
+    .toast--warning {
+      border-color: #ffc021;
+    }
+
+    .toast--warning .toast__icon {
+      color: #ffc021;
+    }
+
+    .toast--error {
+      border-color: #ff623d;
+    }
+
+    .toast--error .toast__icon {
+      color: #ff623d;
+    }
+
+    .toast+.toast {
+      margin-top: 24px;
+    }
+
+    .toast__icon {
+      font-size: 24px;
+    }
+
+    .toast__icon,
+    .toast__close {
+      padding: 0 16px;
+    }
+
+    .toast__body {
+      flex-grow: 1;
+    }
+
+    .toast__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .toast__msg {
+      font-size: 14px;
+      color: #888;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .toast__close {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+  <div id="toast"></div>
   <div id="login-page">
     <div class="container">
       <div class="screen">
@@ -487,8 +593,6 @@
             <button onclick="startTimer()">Lưu cấu hình</button>
             <button onclick="configurewifi()">Thiết lập Mode</button>
           </div>
-          <div id="selected-settings"></div>
-          <div id="error-message" class="error-message"></div>
         </div>
       </div>
     </div>
@@ -894,29 +998,32 @@
           return list
         }
         // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
-        if (checks && (runTimeHourArray[id] > 23 || runTimeHourArray[id] < 0 || runTimeMinuteArray[id] < 0 || runTimeMinuteArray[id] > 59 || repeatCountArray[id] <= 0)) {
-          const errorElement = document.createElement('div')
-          errorElement.innerText = `Vui lòng nhập đúng định dạng thời gian cho cài đặt ${id + 1}`;
-          errorMessageElement.appendChild(errorElement)
-          return
-        }
         if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
-          const errorElement = document.createElement('div')
-          errorElement.innerText = `Vui lòng nhập giờ chạy cho cài đặt ${id + 1}`;
-          errorMessageElement.appendChild(errorElement)
+          toast({
+            title: "Lỗi",
+            message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`,
+            type: "error",
+            duration: 5000
+          })
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
         if (chars[id] === 0 || chars[id] === 1 || chars[id] === 9) {
-          const errorElement = document.createElement('div')
-          errorElement.innerText = `Vui lòng nhập đúng định dạng thời gian cho cài đặt ${id + 1}`;
-          errorMessageElement.appendChild(errorElement)
+          toast({
+            title: "Lỗi",
+            message: `Vui lòng nhập đúng định dạng thời gian của cài đặt ${id + 1}`,
+            type: "error",
+            duration: 5000
+          })
           return
         }
         if (removeDuplicateNumbers(chars)) {
-          const errorElement = document.createElement('div')
-          errorElement.innerText = `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`;
-          errorMessageElement.appendChild(errorElement)
+          toast({
+            title: "Lỗi",
+            message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`,
+            type: "error",
+            duration: 5000
+        })
           return
         }
         // Hàm gửi thông tin cài đặt
@@ -948,14 +1055,12 @@
           send(id)
         }
         send_check()
-
-        const settingInfo = `Cài đặt ${id + 1} - Giờ Chạy ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Số lần lặp lại ${repeatCountArray[id]}`;
-        const settingInfoElement = document.createElement("div");
-        settingInfoElement.innerText = settingInfo;
-        selectedSettingsContainer.appendChild(settingInfoElement);
-        setInterval(() => {
-          settingInfoElement.remove()
-        }, 5000)
+        toast({
+          title: "Cập nhật thành công",
+          message: `Cài đặt ${id + 1} - Giờ Chạy ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Số lần lặp lại ${chars}`,
+          type: "success",
+          duration: 5000
+        })
       })
     }
 
@@ -965,8 +1070,6 @@
         createSettingRow(i);
       }
     });
-
-
     // Hàm kiểm tra đăng nhập
     login_btn.addEventListener('click', (e) => {
       e.preventDefault()
@@ -974,6 +1077,13 @@
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
         getstatusD()
+      } else {
+        toast({
+          title: "Lỗi",
+          message: "Mật khẩu không đúng",
+          type: "error",
+          duration: 5000
+        })
       }
     })
     // Hàm ẩn hiện mật khẩu
@@ -1108,7 +1218,47 @@
         }
       }
     }
+    // Toast message
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+      const main = document.getElementById("toast");
+      if (main) {
+        const toast = document.createElement("div");
+        // @ auto remove toast
+        setTimeout(function () {
+          main.removeChild(toast);
+        }, duration + 1000);
+        // @ remove toast when click
+        toast.onclick = function (e) {
+          if (e.target.closest(".toast__close")) {
+            main.removeChild(toast);
+          }
+        };
 
+        const icons = {
+          success: "fas fa-circle-check",
+          info: "fas fa-circle-info",
+          warning: "fas fa-circle-exclamation",
+          error: "fas fa-circle-exclamation",
+        };
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+        toast.classList.add("toast", `toast--${type}`);
+        toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+        toast.innerHTML = `
+        <div class="toast__icon">
+          <i class="${icon}"></i>
+        </div>
+        <div class="toast__body">
+          <h3 class="toast__title">${title}</h3>
+          <p class="toast__msg">${message}</p>
+        </div>
+        <div class="toast__close">
+          <i class="fa-solid fa-xmark"></i>
+        </div>
+      `;
+        main.appendChild(toast);
+      }
+    }
   </script>
 </body>
 
