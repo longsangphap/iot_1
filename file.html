@@ -281,7 +281,6 @@
     }
     function createBtnSettingRow(index) {
       const container = document.querySelectorAll(".settings-container");
-      console.log(container);
       container.forEach((element) => {
         const settingRow = document.createElement("div");
         settingRow.className = "btn-setting-row";
@@ -296,9 +295,10 @@
       })
     }
     function deleteBtnSettingRow() {
-      const container = document.querySelectorAll('.btn-setting-row');
+      const container = document.querySelectorAll(".settings-container");
+      console.log(container);
       container.forEach((element) => {
-        element.remove();
+        element.remove()
       })
     }
 
