@@ -1008,7 +1008,7 @@
         if (chars[id] === 0 || chars[id] === 1 || chars[id] === 9) {
           toast({
             title: "Lỗi",
-            message: `Vui lòng nhập đúng định dạng thứ ngày của cài đặt ${id + 1}`,
+            message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`,
             type: "error",
             duration: 5000
           })
@@ -1077,7 +1077,7 @@
       } else {
         toast({
           title: "Lỗi",
-          message: "Mật khẩu không đúng",
+          message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu",
           type: "error",
           duration: 3000
         })
