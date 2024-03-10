@@ -525,79 +525,10 @@
       container.forEach((e) => {
         elements.push(e)
       })
-      if (e.value === "A") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 0) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "B") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 1) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "C") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 2) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "D") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 3) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "E") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 4) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "F") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 5) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "G") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 6) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "H") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 7) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
-      } else if (e.value === "I") {
-        for (let i = 0; i < 9; i++) {
-          if (i === 8) {
-            elements[i].style.display = "grid"
-          } else {
-            elements[i].style.display = "none"
-          }
-        }
+      for (let i = 0; i < 9; i++) {
+        elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
       }
+
     }
     // Toast message
     function toast({ title = "", message = "", type = "info", duration = 3000 }) {
