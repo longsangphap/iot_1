@@ -413,31 +413,13 @@
           xhttp.onreadystatechange = process;
           xhttp.send();
         }
-        if (id === 0) {
+        if (id >= 0 && id <= 9) {
           send(id);
-        } else if (id === 1) {
-          send(id);
-        } else if (id === 2) {
-          send(id)
-        } else if (id === 3) {
-          send(id)
-        } else if (id === 4) {
-          send(id);
-        } else if (id === 5) {
-          send(id)
-        } else if (id === 6) {
-          send(id)
-        } else if (id === 7) {
-          send(id);
-        } else if (id === 8) {
-          send(id)
-        } else if (id === 9) {
-          send(id)
         }
         send_check()
         toast({
           title: "Cập nhật thành công",
-          message: `Cài đặt ${id + 1} - Giờ Chạy ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Số lần lặp lại ${chars}`,
+          message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`,
           type: "success",
           duration: 5000
         })
