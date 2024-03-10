@@ -690,14 +690,13 @@
         var obj = JSON.parse(statusD);
         d1 = obj.H;
         d2 = obj.M;
-        updateLedstatus(d1, d2);
+        updateLedstatus(d1);
       }
     }
 
     //----------Hiển thị trạng thái Led lên trình duyệt---------------------
-    function updateLedstatus(D1, D2) {
-      document.getElementById("hour").value = D1;
-      document.getElementById("minute").value = D2;
+    function updateLedstatus(D1) {
+      document.getElementById("clock-display").value = D1;
     }
 
     //-----------Kiểm tra response -------------------------------------------
