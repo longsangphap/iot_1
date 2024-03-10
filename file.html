@@ -922,9 +922,6 @@
     }
 
     function startTimer() {
-      const selectedSettingsContainer = document.getElementById("selected-settings");
-      const errorMessageElement = document.getElementById("error-message");
-      errorMessageElement.innerText = ""; // Xóa thông báo lỗi trước khi kiểm tra mới
       let isSaveSettingsChecked = document.querySelectorAll('.setting-checkbox');
       // Lặp qua 10 phần cài đặt để lấy thông tin
       let modeArray = []
@@ -1011,7 +1008,7 @@
         if (chars[id] === 0 || chars[id] === 1 || chars[id] === 9) {
           toast({
             title: "Lỗi",
-            message: `Vui lòng nhập đúng định dạng thời gian của cài đặt ${id + 1}`,
+            message: `Vui lòng nhập đúng định dạng thứ ngày của cài đặt ${id + 1}`,
             type: "error",
             duration: 5000
           })
