@@ -857,13 +857,18 @@
         const formattedTime = `${formattedHour}:${formattedMinute}`;
 
         document.getElementById("clock-display").innerText = formattedTime;
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/send_settinghour?hour=" + hourInput + "&minute=" + minuteInput + "&minute=", true);
+        xhttp.onreadystatechange = process;
+        xhttp.send();
       } else {
-        alert("Vui lòng nhập giờ và phút hợp lệ.");
+        toast({
+          title: "Lỗi",
+          message: "Vui lòng nhập giờ và phút hợp lệ",
+          type: "error",
+          duration: 5000
+        })
       }
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("GET", "/send_settinghour?hour=" + hourInput + "&minute=" + minuteInput + "&minute=", true);
-      xhttp.onreadystatechange = process;
-      xhttp.send();
 
     }
     function validateNumberInput(input) {
