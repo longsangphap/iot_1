@@ -1005,14 +1005,16 @@
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
-        if (chars[id] === 0 || chars[id] === 1 || chars[id] === 9) {
-          toast({
-            title: "Lỗi",
-            message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`,
-            type: "error",
-            duration: 5000
-          })
-          return
+        for (let i = 0; i < chars.length; i++) {
+          if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
+            toast({
+              title: "Lỗi",
+              message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`,
+              type: "error",
+              duration: 5000
+            })
+            return
+          }
         }
         if (removeDuplicateNumbers(chars)) {
           toast({
@@ -1020,7 +1022,7 @@
             message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`,
             type: "error",
             duration: 5000
-        })
+          })
           return
         }
         // Hàm gửi thông tin cài đặt
