@@ -138,20 +138,6 @@ function createSettingRow(index) {
     <label class="setting-label" for="save-settings-${index}">Lưu ${index + 1}</label>
   </div>
   `;
-  function generateHourOptions() {
-    let options = ''
-    for (let hour = 1; hour < 24; hour++) {
-      options += `<option value="${hour}">${hour}</option>`;
-    }
-    return options;
-  }
-  function generateMinuteOptions() {
-    let options = ''
-    for (let minute = 1; minute < 60; minute++) {
-      options += `<option value="${minute}">${minute}</option>`;
-    }
-    return options;
-  }
   container.appendChild(settingRow);
 }
 // btn setting element
