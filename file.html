@@ -1034,98 +1034,78 @@
         elements.push(e)
       })
       if (e.value === "A") {
-        elements[0].style.display = "grid"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
-
+        for (let i = 0; i < 9; i++) {
+          if (i === 0) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "B") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "grid"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 1) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "C") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "grid"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 2) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "D") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "grid"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 3) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "E") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "grid"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 4) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "F") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "grid"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 5) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "G") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "grid"
-        elements[7].style.display = "none"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 6) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "H") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "grid"
-        elements[8].style.display = "none"
+        for (let i = 0; i < 9; i++) {
+          if (i === 7) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       } else if (e.value === "I") {
-        elements[0].style.display = "none"
-        elements[1].style.display = "none"
-        elements[2].style.display = "none"
-        elements[3].style.display = "none"
-        elements[4].style.display = "none"
-        elements[5].style.display = "none"
-        elements[6].style.display = "none"
-        elements[7].style.display = "none"
-        elements[8].style.display = "grid"
+        for (let i = 0; i < 9; i++) {
+          if (i === 8) {
+            elements[i].style.display = "grid"
+          } else {
+            elements[i].style.display = "none"
+          }
+        }
       }
-
     }
 
   </script>
