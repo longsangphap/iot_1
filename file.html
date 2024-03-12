@@ -592,6 +592,7 @@
           <option value="G">Mode G</option>
           <option value="H">Mode H</option>
           <option value="I">Mode I</option>
+          <option value="J">Mode J</option>
         </select>
       </div>
       <div class="btn-row">
@@ -719,7 +720,7 @@
       const dropdown = document.querySelectorAll(".dropdown");
       let buttons = []
       var startValue = 0
-      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320};
+      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360};
       if (modeMappings.hasOwnProperty(modeDropdown)) {
         startValue = modeMappings[modeDropdown];
       }
@@ -752,12 +753,12 @@
       container.forEach((e) => {
         elements.push(e)
       })
-      for (let i = 0; i < 9; i++) {
+      for (let i = 0; i < 10; i++) {
         elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
       }
     }
     function createSettingsContainers() {
-      var containerIds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+      var containerIds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
       for (var i = 0; i < containerIds.length; i++) {
         var containerId = containerIds[i];
         var settingsContainer = document.createElement('div');
@@ -823,7 +824,7 @@
     }
     function createSettingRow(index) {
       function createmode() {
-        const modevalues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        const modevalues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
         let modes = ''
         for (let i = 0; i < modevalues.length; i++) {
           modes += `<option value="${modevalues[i]}">mode ${modevalues[i]}</option>`
