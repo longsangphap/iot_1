@@ -718,6 +718,48 @@
         createBtnSettingRow(i);
       }
     }
+    function applySettings() {
+      const modeDropdown = document.getElementById("mode-dropdown").value;
+      const dropdown = document.querySelectorAll(".dropdown");
+      let buttons = []
+      var startValue = 0
+      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320};
+      if (modeMappings.hasOwnProperty(modeDropdown)) {
+        startValue = modeMappings[modeDropdown];
+      }
+      dropdown.forEach((e) => {
+        buttons.push(e.value)
+      })
+      // Send_case
+      var xhttp = new XMLHttpRequest();
+      var url = `/send_${modeDropdown}?`
+      var cases = []
+      for (let i = 0; i < 4; i++) {
+        const caseParams = buttons.slice(i * 10, (i + 1) * 10).map((value, index) => buttons[index * 4 + i + startValue]).join('/')
+        cases.push(`case${i + 1}=${caseParams}`)
+      }
+      const fullURL = `${url}&${cases.join('&')}`
+      xhttp.open("GET", fullURL, true);
+      xhttp.onreadystatechange = process;
+      xhttp.send();
+      // Toast message
+      toast({
+        title: "Cập nhật thành công",
+        message: `Cài đặt Mode ${modeDropdown} thành công`,
+        type: "success",
+        duration: 2000
+      })
+    }
+    function modeChange(e) {
+      const container = document.querySelectorAll(".settings-container");
+      let elements = []
+      container.forEach((e) => {
+        elements.push(e)
+      })
+      for (let i = 0; i < 9; i++) {
+        elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
+      }
+    }
     function updateClock() {
       const hourInput = document.getElementById("hour").value;
       const minuteInput = document.getElementById("minute").value;
@@ -748,40 +790,35 @@
       input.value = input.value.replace(/[^0-9]/g, '');
     }
     function createSettingRow(index) {
+      function createmode() {
+        const modevalues = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        let modes = ''
+        for (let i = 0; i < modevalues.length; i++) {
+          modes += `<option value="${modevalues[i]}">mode ${modevalues[i]}</option>`
+        }
+        return modes
+      }
       const container = document.getElementById("settings-container");
-
       const settingRow = document.createElement("div");
       settingRow.className = "setting-row";
 
       settingRow.innerHTML = `
-  <div class="setting-number">${index + 1}</div>
-  <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 onkeydown="return false;">
-  <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59 onkeydown="return false;">
-  <input class="setting-input" type="text" id="repeat-${index}" placeholder="Ngày" style="width:20%;" oninput="validateNumberInput(this)">
-  <select class="setting-input mode-select" id="mode-${index}" style="width:20%">
-    <option value="A">Mode A</option>
-    <option value="B">Mode B</option>
-    <option value="C">Mode C</option>
-    <option value="D">Mode D</option>
-    <option value="E">Mode E</option>
-    <option value="F">Mode F</option>
-    <option value="G">Mode G</option>
-    <option value="H">Mode H</option>
-    <option value="I">Mode I</option>              
-  </select>
-  <div style="width:20%">
-    <input class="setting-checkbox" type="checkbox" id="save-settings-${index}"/>
-    <label class="setting-label" for="save-settings-${index}">Lưu ${index + 1}</label>
-  </div>
-  `;
+        <div class="setting-number">${index + 1}</div>
+        <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 onkeydown="return false;">
+        <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59 onkeydown="return false;">
+        <input class="setting-input" type="text" id="repeat-${index}" placeholder="Ngày" style="width:20%;" oninput="validateNumberInput(this)">
+        <select class="setting-input mode-select" id="mode-${index}" style="width:20%">${createmode()}</select>
+        <div style="width:20%">
+          <input class="setting-checkbox" type="checkbox" id="save-settings-${index}"/>
+          <label class="setting-label" for="save-settings-${index}">Lưu ${index + 1}</label>
+        </div>
+        `;
       container.appendChild(settingRow);
     }
     function createSettingsContainers() {
       var containerIds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-
       for (var i = 0; i < containerIds.length; i++) {
         var containerId = containerIds[i];
-
         var settingsContainer = document.createElement('div');
         settingsContainer.className = 'settings-container';
         settingsContainer.id = containerId;
@@ -797,23 +834,21 @@
         const settingRow = document.createElement("div");
         settingRow.className = "btn-setting-row";
         settingRow.innerHTML = `
-    <select class="dropdown" id="dropdown${index + 1}">
-      <option value="0">Không nhấn</option>
-      <option value="1">Nhấn nhả</option>
-      <option value="2">Nhấn giữ</option>
-    </select>
-    `;
+          <select class="dropdown" id="dropdown${index + 1}">
+            <option value="0">Không nhấn</option>
+            <option value="1">Nhấn nhả</option>
+            <option value="2">Nhấn giữ</option>
+          </select>
+          `;
         element.appendChild(settingRow);
       })
     }
     function deleteBtnSettingRow() {
       const container = document.querySelectorAll(".settings-container");
-      console.log(container);
       container.forEach((element) => {
         element.remove()
       })
     }
-
     function startTimer() {
       let isSaveSettingsChecked = document.querySelectorAll('.setting-checkbox');
       // Lặp qua 10 phần cài đặt để lấy thông tin
@@ -941,7 +976,6 @@
         })
       })
     }
-
     // Tạo 10 phần cài đặt khi trang web được tải
     document.addEventListener("DOMContentLoaded", function () {
       for (let i = 0; i < 10; i++) {
@@ -977,52 +1011,6 @@
       }
     }
 
-    // wifisetup page
-    function applySettings() {
-      const modeDropdown = document.getElementById("mode-dropdown").value;
-      const dropdown = document.querySelectorAll(".dropdown");
-      let buttons = []
-      var startValue = 0
-      const modeMappings = { "B": 10, "C": 20, "D": 30, "E": 40, "F": 50, "G": 60, "H": 70, "I": 80 };
-      if (modeMappings.hasOwnProperty(modeDropdown)) {
-        startValue = modeMappings[modeDropdown];
-      }
-      dropdown.forEach((e) => {
-        buttons.push(e.value)
-      })
-      function send_case() {
-        var xhttp = new XMLHttpRequest();
-        var url = `/send_${modeDropdown}?`
-        var cases = []
-        for (let i = 0; i < 4; i++) {
-          const caseParams = buttons.slice(i * 10, (i + 1) * 10).map((value, index) => buttons[index * 4 + i + startValue]).join('/')
-          cases.push(`case${i + 1}=${caseParams}`)
-        }
-        const fullURL = `${url}&${cases.join('&')}`
-        console.log(fullURL);
-        xhttp.open("GET", fullURL, true);
-        xhttp.onreadystatechange = process;
-        xhttp.send();
-      }
-      send_case();
-      toast({
-        title: "Cập nhật thành công",
-        message: `Cài đặt Mode ${modeDropdown} thành công`,
-        type: "success",
-        duration: 2000
-      })
-    }
-    function modeChange(e) {
-      const container = document.querySelectorAll(".settings-container");
-      let elements = []
-      container.forEach((e) => {
-        elements.push(e)
-      })
-      for (let i = 0; i < 9; i++) {
-        elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
-      }
-
-    }
     // Toast message
     function toast({ title = "", message = "", type = "info", duration = 3000 }) {
       const main = document.getElementById("toast");
