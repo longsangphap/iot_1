@@ -992,7 +992,7 @@
       })
       function send_case() {
         var xhttp = new XMLHttpRequest();
-        var url = `/send_case?mode=${modeDropdown}`
+        var url = `/send_${modeDropdown}?`
         var cases = []
         for (let i = 0; i < 4; i++) {
           const caseParams = buttons.slice(i * 10, (i + 1) * 10).map((value, index) => buttons[index * 4 + i + startValue]).join('/')
