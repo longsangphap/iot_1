@@ -740,12 +740,7 @@
       xhttp.onreadystatechange = process;
       xhttp.send();
       // Toast message
-      toast({
-        title: "Cập nhật thành công",
-        message: `Cài đặt Mode ${modeDropdown} thành công`,
-        type: "success",
-        duration: 2000
-      })
+      toast({title: "Cập nhật thành công", message: `Cài đặt Mode ${modeDropdown} thành công`, type: "success", duration: 2000})
     }
     function modeChange(e) {
       const container = document.querySelectorAll(".settings-container");
@@ -810,12 +805,7 @@
         xhttp.onreadystatechange = process;
         xhttp.send();
       } else {
-        toast({
-          title: "Lỗi",
-          message: "Vui lòng nhập giờ và phút hợp lệ",
-          type: "error",
-          duration: 5000
-        })
+        toast({title: "Lỗi", message: "Vui lòng nhập giờ và phút hợp lệ", type: "error", duration: 5000})
       }
 
     }
@@ -931,18 +921,18 @@
         }
         // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
         if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
-          toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000 })
+          toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000})
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
         for (let i = 0; i < chars.length; i++) {
           if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
-            toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000 })
+            toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000})
             return
           }
         }
         if (removeDuplicateNumbers(chars)) {
-          toast({ title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000 })
+          toast({ title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000})
           return
         }
         if (id >= 0 && id <= 9) {
@@ -954,7 +944,7 @@
         }
         // Gửi thông tin checkbox
         send_check()
-        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000 })
+        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000})
       })
     }
     // Tạo 10 phần cài đặt khi trang web được tải
@@ -971,12 +961,7 @@
         homecontrol.style.display = "block";
         getstatusD()
       } else {
-        toast({
-          title: "Lỗi",
-          message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu",
-          type: "error",
-          duration: 3000
-        })
+        toast({title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000})
       }
     })
     // Hàm ẩn hiện mật khẩu
@@ -1003,7 +988,7 @@
     }
 
     // Toast message
-    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+    function toast({ title = "", message = "", type = "info", duration = 3000}) {
       const main = document.getElementById("toast");
       if (main) {
         const toast = document.createElement("div");
