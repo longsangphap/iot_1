@@ -200,10 +200,6 @@
       margin-right: 10px
     }
 
-    .empty-space {
-      width: 20px
-    }
-
     .table-row {
       border: 1px solid #ddd;
       border-radius: 5px;
@@ -760,6 +756,42 @@
         elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
       }
     }
+    function createSettingsContainers() {
+      var containerIds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+      for (var i = 0; i < containerIds.length; i++) {
+        var containerId = containerIds[i];
+        var settingsContainer = document.createElement('div');
+        settingsContainer.className = 'settings-container';
+        settingsContainer.id = containerId;
+        if (containerId === 'A') {
+          settingsContainer.style.display = 'grid';
+        }
+        document.getElementById('control-btn').appendChild(settingsContainer);
+      }
+    }
+    function deleteBtnSettingRow() {
+      const container = document.querySelectorAll(".settings-container");
+      container.forEach((element) => {
+        element.remove()
+      })
+    }
+    function createBtnSettingRow(index) {
+      const container = document.querySelectorAll(".settings-container");
+      container.forEach((element) => {
+        const settingRow = document.createElement("div");
+        settingRow.className = "btn-setting-row";
+        settingRow.innerHTML = `
+          <select class="dropdown" id="dropdown${index + 1}">
+            <option value="0">Không nhấn</option>
+            <option value="1">Nhấn nhả</option>
+            <option value="2">Nhấn giữ</option>
+          </select>
+          `;
+        element.appendChild(settingRow);
+      })
+    }
+    
+    //==================Home Page=======================//
     function updateClock() {
       const hourInput = document.getElementById("hour").value;
       const minuteInput = document.getElementById("minute").value;
@@ -804,8 +836,8 @@
 
       settingRow.innerHTML = `
         <div class="setting-number">${index + 1}</div>
-        <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 onkeydown="return false;">
-        <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59 onkeydown="return false;">
+        <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 onkeydown="excludeKeys(event, ['Backspace']);;">
+        <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59 onkeydown="excludeKeys(event, ['Backspace']);;">
         <input class="setting-input" type="text" id="repeat-${index}" placeholder="Ngày" style="width:20%;" oninput="validateNumberInput(this)">
         <select class="setting-input mode-select" id="mode-${index}" style="width:20%">${createmode()}</select>
         <div style="width:20%">
@@ -815,42 +847,18 @@
         `;
       container.appendChild(settingRow);
     }
-    function createSettingsContainers() {
-      var containerIds = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-      for (var i = 0; i < containerIds.length; i++) {
-        var containerId = containerIds[i];
-        var settingsContainer = document.createElement('div');
-        settingsContainer.className = 'settings-container';
-        settingsContainer.id = containerId;
-        if (containerId === 'A') {
-          settingsContainer.style.display = 'grid';
-        }
-        document.getElementById('control-btn').appendChild(settingsContainer);
-      }
-    }
-    function createBtnSettingRow(index) {
-      const container = document.querySelectorAll(".settings-container");
-      container.forEach((element) => {
-        const settingRow = document.createElement("div");
-        settingRow.className = "btn-setting-row";
-        settingRow.innerHTML = `
-          <select class="dropdown" id="dropdown${index + 1}">
-            <option value="0">Không nhấn</option>
-            <option value="1">Nhấn nhả</option>
-            <option value="2">Nhấn giữ</option>
-          </select>
-          `;
-        element.appendChild(settingRow);
-      })
-    }
-    function deleteBtnSettingRow() {
-      const container = document.querySelectorAll(".settings-container");
-      container.forEach((element) => {
-        element.remove()
-      })
-    }
     function startTimer() {
       let isSaveSettingsChecked = document.querySelectorAll('.setting-checkbox');
+      let checks = []
+      isSaveSettingsChecked.forEach((e) => {
+        if (e.checked) {
+          checks.push(e)
+        }
+      })
+      if (checks.length === 0) {
+        toast({title: "Lỗi", message: "Vui lòng chọn ít nhất một cài đặt để lưu", type: "error", duration: 5000})
+        return
+      }
       // Lặp qua 10 phần cài đặt để lấy thông tin
       let modeArray = []
       let runTimeHourArray = []
@@ -870,9 +878,8 @@
         runTimeHourArray.push(runTimeHourInput)
         runTimeMinuteArray.push(runTimeMinuteInput)
         repeatCountArray.push(repeatCount)
-
-
       }
+      
       // Hàm gửi checkbox
       function send_check() {
         let checks = []
@@ -886,18 +893,13 @@
         var xhttp = new XMLHttpRequest();
         var params = ""
         for (let i = 0; i < checks.length; i++) {
-          params += "&checkbox" + i + "=" + checks[i];
+          params += `&checkbox${i}=${checks[i]}`
         }
         xhttp.open("GET", "/send_checkbox?checkbox0=" + params, true);
         xhttp.onreadystatechange = process;
         xhttp.send();
       }
-      let checks = []
-      isSaveSettingsChecked.forEach((e) => {
-        if (e.checked) {
-          checks.push(e)
-        }
-      })
+      
 
       checks.forEach((e) => {
         let id = parseInt(e.id.replace('save-settings-', ''))
@@ -928,52 +930,30 @@
         }
         // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
         if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
-          toast({
-            title: "Lỗi",
-            message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`,
-            type: "error",
-            duration: 5000
-          })
+          toast({title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000})
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
         for (let i = 0; i < chars.length; i++) {
           if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
-            toast({
-              title: "Lỗi",
-              message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`,
-              type: "error",
-              duration: 5000
-            })
+            toast({title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000})
             return
           }
         }
         if (removeDuplicateNumbers(chars)) {
-          toast({
-            title: "Lỗi",
-            message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`,
-            type: "error",
-            duration: 5000
-          })
+          toast({title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000})
           return
         }
-        // Hàm gửi thông tin cài đặt
-        function send(id) {
+        if (id >= 0 && id <= 9) {
+          // Gửi thông tin cài đặt
           var xhttp = new XMLHttpRequest();
           xhttp.open("GET", `/send_${id + 1}?mode=${modeArray[id]}&hour=${runTimeHourArray[id]}&minute=${runTimeMinuteArray[id]}&date=${changeValue(chars)}`, true);
           xhttp.onreadystatechange = process;
           xhttp.send();
         }
-        if (id >= 0 && id <= 9) {
-          send(id);
-        }
+        // Gửi thông tin checkbox
         send_check()
-        toast({
-          title: "Cập nhật thành công",
-          message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`,
-          type: "success",
-          duration: 5000
-        })
+        toast({title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000})
       })
     }
     // Tạo 10 phần cài đặt khi trang web được tải
@@ -1008,6 +988,15 @@
       } else {
         passwordInput.type = "password";
         toggleIcon.textContent = "Hiện"; // Hiển thị biểu tượng đóng mắt
+      }
+    }
+    function excludeKeys(event, allowedKeys) {
+      const pressedKey = event.key;
+
+      // Check if the pressed key is in the allowedKeys array
+      if (!allowedKeys.includes(pressedKey)) {
+        // If not, prevent the default behavior
+        event.preventDefault();
       }
     }
 
