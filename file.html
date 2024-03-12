@@ -791,7 +791,7 @@
         element.appendChild(settingRow);
       })
     }
-    
+
     //==================Home Page=======================//
     function updateClock() {
       const hourInput = document.getElementById("hour").value;
@@ -857,7 +857,7 @@
         }
       })
       if (checks.length === 0) {
-        toast({title: "Lỗi", message: "Vui lòng chọn ít nhất một cài đặt để lưu", type: "error", duration: 5000})
+        toast({ title: "Lỗi", message: "Vui lòng chọn ít nhất một cài đặt để lưu", type: "error", duration: 5000 })
         return
       }
       // Lặp qua 10 phần cài đặt để lấy thông tin
@@ -880,7 +880,7 @@
         runTimeMinuteArray.push(runTimeMinuteInput)
         repeatCountArray.push(repeatCount)
       }
-      
+
       // Hàm gửi checkbox
       function send_check() {
         let checks = []
@@ -893,14 +893,14 @@
         })
         var xhttp = new XMLHttpRequest();
         var params = ""
-        for (let i = 0; i < checks.length; i++) {
+        for (let i = 1; i < checks.length; i++) {
           params += `&checkbox${i}=${checks[i]}`
         }
-        xhttp.open("GET", "/send_checkbox?checkbox0=" + params, true);
+        xhttp.open("GET", `/send_checkbox?checkbox0=${checks[0]}` + params, true);
         xhttp.onreadystatechange = process;
         xhttp.send();
       }
-      
+
 
       checks.forEach((e) => {
         let id = parseInt(e.id.replace('save-settings-', ''))
@@ -931,18 +931,18 @@
         }
         // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
         if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
-          toast({title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000})
+          toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000 })
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
         for (let i = 0; i < chars.length; i++) {
           if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
-            toast({title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000})
+            toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000 })
             return
           }
         }
         if (removeDuplicateNumbers(chars)) {
-          toast({title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000})
+          toast({ title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000 })
           return
         }
         if (id >= 0 && id <= 9) {
@@ -954,7 +954,7 @@
         }
         // Gửi thông tin checkbox
         send_check()
-        toast({title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000})
+        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000 })
       })
     }
     // Tạo 10 phần cài đặt khi trang web được tải
