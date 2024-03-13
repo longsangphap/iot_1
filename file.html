@@ -648,6 +648,7 @@
     var xhttp = create_obj(); // Đối tượng request cho setup wifi
     var xhttp_statusD = create_obj(); // Đối tượng request cho cập nhật trạng thái
     var d1, d2, d3, d4, u, h;
+    var data1, data2, data3, data4, data5, data6, data7, data8, data9, data10;
 
     //-----------Gửi yêu cầu lấy trạng thái các chân D-----------------
     function getstatusD() {
@@ -656,6 +657,11 @@
       xhttp_statusD.send();
     }
 
+    function getstatuspage1() {
+      xhttp.open("GET", "/getSTATUSPAGE1", true);
+      xhttp.onreadystatechange = process_statuspage1;
+      xhttp.send();
+    }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
       if (xhttp_statusD.readyState == 4 && xhttp_statusD.status == 200) {
@@ -668,11 +674,33 @@
       }
     }
 
-    //----------Hiển thị trạng thái Led lên trình duyệt---------------------
+    function process_statuspage1() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        //------Update trạng thái led tín hiệu lên panel điều khiển----
+        const {D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10} = JSON.parse(xhttp.responseText)
+        updatePage1Status(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10);
+      }
+    }
+
+    //----------Hiển thị trạng thái thời gian lên trình duyệt---------------------
     function updateLedstatus(D1, D2) {
       document.getElementById("clock-display").innerText = D1;
     }
-
+    function updatePage1Status(d1, d2, d3, d4, d5, d6, d7, d8, d9, d10) {
+      var dataArr = [d1, d2 , d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
+      dataArr.forEach((e, index) => {
+        let runTimeHourInput = document.getElementById(`run-time-hour-${i}`);
+        let runTimeMinuteInput = document.getElementById(`run-time-minute-${i}`);
+        let selectedMode = document.getElementById(`mode-${i}`);
+        let repeatCount = document.getElementById(`repeat-${i}`);
+        if (e && e.length === 4) {
+          runTimeHourInput.value = e[0];
+          runTimeMinuteInput.value = e[1];
+          repeatCount.value = e[2];
+          selectedMode.value = e[3];
+        }
+      })
+    }
     //-----------Kiểm tra response -------------------------------------------
     function process() {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
@@ -694,7 +722,6 @@
     setInterval(function () {
       getstatusD();
     }, 2000);
-
     //----------------------------CHECK EMPTY--------------------------------
     function Empty(element, AlertMessage) {
       if (element.value.trim() == "") {
@@ -720,7 +747,7 @@
       const dropdown = document.querySelectorAll(".dropdown");
       let buttons = []
       var startValue = 0
-      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360};
+      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360 };
       if (modeMappings.hasOwnProperty(modeDropdown)) {
         startValue = modeMappings[modeDropdown];
       }
@@ -740,7 +767,7 @@
       xhttp.onreadystatechange = process;
       xhttp.send();
       // Toast message
-      toast({title: "Cập nhật thành công", message: `Cài đặt Mode ${modeDropdown} thành công`, type: "success", duration: 2000})
+      toast({ title: "Cập nhật thành công", message: `Cài đặt Mode ${modeDropdown} thành công`, type: "success", duration: 2000 })
     }
     function modeChange(e) {
       const container = document.querySelectorAll(".settings-container");
@@ -805,7 +832,7 @@
         xhttp.onreadystatechange = process;
         xhttp.send();
       } else {
-        toast({title: "Lỗi", message: "Vui lòng nhập giờ và phút hợp lệ", type: "error", duration: 5000})
+        toast({ title: "Lỗi", message: "Vui lòng nhập giờ và phút hợp lệ", type: "error", duration: 5000 })
       }
 
     }
@@ -921,18 +948,18 @@
         }
         // Kiểm tra nếu checkbox được chọn mà chưa điền đầy đủ thông tin
         if (checks && (runTimeHourArray[id] === '' || runTimeMinuteArray[id] === '' || repeatCountArray[id] === '')) {
-          toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000})
+          toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000 })
           return
         }
         var chars = repeatCountArray[id].split('').map(Number);
         for (let i = 0; i < chars.length; i++) {
           if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
-            toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000})
+            toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng chu kỳ của cài đặt ${id + 1} (2-8)`, type: "error", duration: 5000 })
             return
           }
         }
         if (removeDuplicateNumbers(chars)) {
-          toast({ title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000})
+          toast({ title: "Lỗi", message: `Chu kỳ của cài đặt ${id + 1} có ngày trùng lặp`, type: "error", duration: 5000 })
           return
         }
         if (id >= 0 && id <= 9) {
@@ -944,7 +971,7 @@
         }
         // Gửi thông tin checkbox
         send_check()
-        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000})
+        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000 })
       })
     }
     // Tạo 10 phần cài đặt khi trang web được tải
@@ -959,9 +986,9 @@
       if (password.value === 'iot1234') {
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
-        getstatusD()
+        getstatuspage1()
       } else {
-        toast({title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000})
+        toast({ title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000 })
       }
     })
     // Hàm ẩn hiện mật khẩu
@@ -988,7 +1015,7 @@
     }
 
     // Toast message
-    function toast({ title = "", message = "", type = "info", duration = 3000}) {
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
       const main = document.getElementById("toast");
       if (main) {
         const toast = document.createElement("div");
