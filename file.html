@@ -689,16 +689,17 @@
     function updatePage1Status(d1, d2, d3, d4, d5, d6, d7, d8, d9, d10) {
       var dataArr = [d1, d2 , d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
       dataArr.forEach((e, index) => {
-        let runTimeHourInput = document.getElementById(`run-time-hour-${i}`);
-        let runTimeMinuteInput = document.getElementById(`run-time-minute-${i}`);
-        let selectedMode = document.getElementById(`mode-${i}`);
-        let repeatCount = document.getElementById(`repeat-${i}`);
+        let runTimeHourInput = document.getElementById(`run-time-hour-${index}`);
+        let runTimeMinuteInput = document.getElementById(`run-time-minute-${index}`);
+        let selectedMode = document.getElementById(`mode-${index}`);
+        let repeatCount = document.getElementById(`repeat-${index}`);
         if (e && e.length === 4) {
           runTimeHourInput.value = e[0];
           runTimeMinuteInput.value = e[1];
           repeatCount.value = e[2];
           selectedMode.value = e[3];
         }
+        console.log(runTimeHourInput);
       })
     }
     //-----------Kiểm tra response -------------------------------------------
@@ -987,6 +988,7 @@
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
         getstatuspage1()
+        updatePage1Status()
       } else {
         toast({ title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000 })
       }
