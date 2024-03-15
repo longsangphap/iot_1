@@ -679,9 +679,8 @@
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         //------Update trạng thái led tín hiệu lên panel điều khiển----
         const {D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10, CB:cb} = JSON.parse(xhttp.responseText)
-        var dataArr = [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
-        var cbArr = cb.split('/')
-        updatePage1Status(dataArr, cbArr);
+        
+        updatePage1Status(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, cb);
       }
     }
 
@@ -690,6 +689,8 @@
       document.getElementById("clock-display").innerText = D1;
     }
     function updatePage1Status(dataArr, cbArr) {
+      var dataArr = [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
+      var cbArr = cb.split('/')
       dataArr.forEach((e, index) => {
         let runTimeHourInput = document.getElementById(`run-time-hour-${index}`);
         let runTimeMinuteInput = document.getElementById(`run-time-minute-${index}`);
