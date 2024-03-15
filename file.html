@@ -649,6 +649,7 @@
     var xhttp_statusD = create_obj(); // Đối tượng request cho cập nhật trạng thái
     var d1, d2, d3, d4, u, h;
     var data1, data2, data3, data4, data5, data6, data7, data8, data9, data10;
+    var cb;
 
     //-----------Gửi yêu cầu lấy trạng thái các chân D-----------------
     function getstatusD() {
@@ -677,8 +678,10 @@
     function process_statuspage1() {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         //------Update trạng thái led tín hiệu lên panel điều khiển----
-        const {D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10} = JSON.parse(xhttp.responseText)
-        updatePage1Status(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10);
+        const {D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10, CB:cb} = JSON.parse(xhttp.responseText)
+        var dataArr = [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
+        var cbArr = cb.split('/')
+        updatePage1Status(dataArr, cbArr);
       }
     }
 
@@ -686,8 +689,7 @@
     function updateLedstatus(D1, D2) {
       document.getElementById("clock-display").innerText = D1;
     }
-    function updatePage1Status(d1, d2, d3, d4, d5, d6, d7, d8, d9, d10) {
-      var dataArr = [d1, d2 , d3, d4, d5, d6, d7, d8, d9, d10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
+    function updatePage1Status(dataArr, cbArr) {
       dataArr.forEach((e, index) => {
         let runTimeHourInput = document.getElementById(`run-time-hour-${index}`);
         let runTimeMinuteInput = document.getElementById(`run-time-minute-${index}`);
@@ -696,10 +698,31 @@
         if (e && e.length === 4) {
           runTimeHourInput.value = e[0];
           runTimeMinuteInput.value = e[1];
-          repeatCount.value = e[2];
+          let result = ""
+          for (let i = 0; i < e[2].length; i++) {
+            let char = e[2].charAt(i)
+            if (char === "0") {
+              result += "8"
+            } else {
+              result += (parseInt(char) + 1).toString()
+            }
+          }
+          repeatCount.value = result;
           selectedMode.value = e[3];
         }
-        console.log(runTimeHourInput);
+      })
+      cbArr.forEach((e, index) => {
+        const checkbox = document.getElementById(`save-settings-${index}`);
+        let result = ""
+        for (let i = 0; i < e.length; i++) {
+          let char = e.charAt(i)
+          if (char === "0") {
+            result += "false"
+          } else {
+            result += "true"
+          }
+          checkbox.checked = eval(result)
+        }
       })
     }
     //-----------Kiểm tra response -------------------------------------------
