@@ -689,7 +689,6 @@
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         const {mA: modeA, mB:modeB, mC:modeC, mD:modeD, mE:modeE, mF:modeF, mG:modeG,mH:modeH,mI:modeI,mJ:modeJ} = JSON.parse(xhttp.responseText)
         var modeArr = [modeA, modeB, modeC, modeD, modeE, modeF, modeG, modeH, modeI, modeJ].map(data => data.split('/'))
-        
         updatePage2Status(id, modeArr)
       }
     }
