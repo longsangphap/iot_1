@@ -692,7 +692,7 @@
         updatePage1Status(dataArr, cbArr);
       }
     }
-    function process_statuspage2() {
+    function process_statuspage2(id) {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         const {mA: modeA, mB:modeB, mC:modeC, mD:modeD, mE:modeE, mF:modeF, mG:modeG,mH:modeH,mI:modeI,mJ:modeJ} = JSON.parse(xhttp.responseText)
         const modeArr = [modeA, modeB, modeC, modeD, modeE, modeF, modeG, modeH, modeI, modeJ].map(data => data.split('/'))
@@ -807,7 +807,7 @@
         createBtnSettingRow(i);
       }
       getstatuspage2()
-      updatePage2Status("A")
+      process_statuspage2("A")
     }
     function applySettings() {
       const modeDropdown = document.getElementById("mode-dropdown").value;
@@ -847,7 +847,7 @@
         if (e.value === String.fromCharCode(65 + i)) {
           const mode = String.fromCharCode(65 + i)
           getstatuspage2()
-          updatePage2Status(mode)
+          process_statuspage2(mode)
         }
       }
     }
