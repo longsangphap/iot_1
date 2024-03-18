@@ -664,6 +664,12 @@
       xhttp.onreadystatechange = process_statuspage1;
       xhttp.send();
     }
+
+    function getstatuspage2(id) {
+      xhttp.open("GET", "/getSTATUSPAGE2", true);
+      xhttp.onreadystatechange = process_statuspage2(id);
+      xhttp.send();
+    }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
       if (xhttp_statusD.readyState == 4 && xhttp_statusD.status == 200) {
@@ -799,7 +805,7 @@
       for (let i = 0; i < 40; i++) {
         createBtnSettingRow(i);
       }
-      process_statuspage2("A")
+      getstatuspage2("A")
     }
     function applySettings() {
       const modeDropdown = document.getElementById("mode-dropdown").value;
