@@ -602,7 +602,7 @@
         <div class="btn-cell">4</div>
       </div>
       <!-- 10 Hàng Cài đặt -->
-      <div id="control-btn" style="position: relative;">
+      <div id="control-btn" style="position: relative; overflow: hidden;">
         <div class="btn-id" style="position: absolute;">
           <div class="btn-number">1</div>
           <div class="btn-number">2</div>
@@ -669,6 +669,7 @@
       xhttp.open("GET", "/getSTATUSPAGE2", true);
       xhttp.onreadystatechange = process_statuspage2;
       xhttp.send();
+
     }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
@@ -685,7 +686,7 @@
     function process_statuspage1() {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         //------Update trạng thái led tín hiệu lên panel điều khiển----
-        const {D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10, CB:cb} = JSON.parse(xhttp.responseText)
+        const { D1: data1, D2: data2, D3: data3, D4: data4, D5: data5, D6: data6, D7: data7, D8: data8, D9: data9, D10: data10, CB: cb } = JSON.parse(xhttp.responseText)
         const dataArr = [data1, data2, data3, data4, data5, data6, data7, data8, data9, data10].map(data => data.split('/').map(item => item.replace(/,/g, '')));
         const cbArr = cb.split('/')
         updatePage1Status(dataArr, cbArr);
@@ -693,42 +694,71 @@
     }
     function process_statuspage2(id) {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
-        const {mA: modeA, mB:modeB, mC:modeC, mD:modeD, mE:modeE, mF:modeF, mG:modeG,mH:modeH,mI:modeI,mJ:modeJ} = JSON.parse(xhttp.responseText)
+        const { mA: modeA, mB: modeB, mC: modeC, mD: modeD, mE: modeE, mF: modeF, mG: modeG, mH: modeH, mI: modeI, mJ: modeJ } = JSON.parse(xhttp.responseText)
         const modeArr = [modeA, modeB, modeC, modeD, modeE, modeF, modeG, modeH, modeI, modeJ].map(data => data.split('/'))
-        updatePage2Status(id, modeArr)
+        const modeId = { "A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9 }
+        function updatePage2Status(id) {
+          console.log(id)
+          const modeDropdown = document.getElementById("mode-dropdown").value;
+          const dataIndex = modeId[id]
+          const dropdowns = document.querySelectorAll('.dropdown')
+          let list = []
+          let index = 0
+          let value = 0
+          const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360 };
+          if (modeMappings.hasOwnProperty(modeDropdown)) {
+            value = modeMappings[modeDropdown];
+          }
+          for (let i = value; i < value + 40; i++) {
+            list.push(dropdowns[i])
+          }
+          const numRows = 10
+          const numCols = 4
+          for (let col = 0; col < numCols; col++) {
+            for (let row = 0; row < numRows; row++) {
+              const dropdownIndex = row * numCols + col
+              if (modeArr[dataIndex] && modeArr[dataIndex].length === 40) {
+                list[dropdownIndex].value = modeArr[dataIndex][index]
+                console.log(modeArr[dataIndex][index])
+                index++
+              }
+            }
+          }
+        }
+        updatePage2Status(id)
       }
     }
     //----------Hiển thị trạng thái thời gian lên trình duyệt---------------------
     function updateLedstatus(D1, D2) {
       document.getElementById("clock-display").innerText = D1;
     }
-    function updatePage2Status(id, arr) {
-      const modeId = { "A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9 }
-      const modeDropdown = document.getElementById("mode-dropdown").value;
-      const dataIndex = modeId[id]
-      const dropdowns = document.querySelectorAll('.dropdown')
-      let list = []
-      let index = 0
-      let value = 0
-      const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360 };
-      if (modeMappings.hasOwnProperty(modeDropdown)) {
-        value = modeMappings[modeDropdown];
-      }
-      for (let i = value; i < value + 40; i++) {
-        list.push(dropdowns[i])
-      }
-      const numRows = 10
-      const numCols = 4
-      for (let col = 0; col < numCols; col++) {
-        for (let row = 0; row < numRows; row++) {
-          const dropdownIndex = row * numCols + col
-          if (arr[dataIndex] && arr[dataIndex].length === 40) {
-            list[dropdownIndex].value = arr[dataIndex][index]
-            index++
-          }
-        }
-      }
-    }
+    // function updatePage2Status(id, arr) {
+    //   const modeId = { "A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9 }
+    //   const modeDropdown = document.getElementById("mode-dropdown").value;
+    //   const dataIndex = modeId[id]
+    //   const dropdowns = document.querySelectorAll('.dropdown')
+    //   let list = []
+    //   let index = 0
+    //   let value = 0
+    //   const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360 };
+    //   if (modeMappings.hasOwnProperty(modeDropdown)) {
+    //     value = modeMappings[modeDropdown];
+    //   }
+    //   for (let i = value; i < value + 40; i++) {
+    //     list.push(dropdowns[i])
+    //   }
+    //   const numRows = 10
+    //   const numCols = 4
+    //   for (let col = 0; col < numCols; col++) {
+    //     for (let row = 0; row < numRows; row++) {
+    //       const dropdownIndex = row * numCols + col
+    //       if (arr[dataIndex] && arr[dataIndex].length === 40) {
+    //         list[dropdownIndex].value = arr[dataIndex][index]
+    //         index++
+    //       }
+    //     }
+    //   }
+    // }
     function updatePage1Status(dataArr, cbArr) {
       dataArr.forEach((e, index) => {
         let runTimeHourInput = document.getElementById(`run-time-hour-${index}`);
@@ -780,6 +810,7 @@
       homecontrol.style.display = "block";
       wifisetup.style.display = "none";
       deleteBtnSettingRow();
+      getstatuspage2()
     }
     //============Hàm thực hiện chứ năng khác================================
     //--------Cập nhật trạng thái tự động sau 2 giây----------------------
@@ -805,7 +836,8 @@
       for (let i = 0; i < 40; i++) {
         createBtnSettingRow(i);
       }
-      getstatuspage2()
+      const mode = document.getElementById("mode-dropdown")
+      mode.value = "A"
       process_statuspage2("A")
     }
     function applySettings() {
@@ -841,11 +873,14 @@
       container.forEach((e) => {
         elements.push(e)
       })
-      for (let i = 0; i < 10; i++) {
-        elements[i].style.display = (e.value === String.fromCharCode(65 + i)) && "grid" || "none";
+      for (let i = 0; i < elements.length; i++) {
+        if (e.value === String.fromCharCode(65 + i)) {
+          elements[i].style.display = "grid"
+        } else {
+          elements[i].style.display = "none"
+        }
         if (e.value === String.fromCharCode(65 + i)) {
           const mode = String.fromCharCode(65 + i)
-          getstatuspage2()
           process_statuspage2(mode)
         }
       }
@@ -1058,6 +1093,7 @@
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
         getstatuspage1()
+        getstatuspage2()
       } else {
         toast({ title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000 })
       }
