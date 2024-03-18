@@ -665,11 +665,10 @@
       xhttp.send();
     }
 
-    function getstatuspage2(id) {
+    function getstatuspage2() {
       xhttp.open("GET", "/getSTATUSPAGE2", true);
       xhttp.onreadystatechange = process_statuspage2;
       xhttp.send();
-      process_statuspage2(id)
     }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
