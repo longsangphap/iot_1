@@ -602,7 +602,7 @@
         <div class="btn-cell">4</div>
       </div>
       <!-- 10 Hàng Cài đặt -->
-      <div id="control-btn" style="position: relative; overflow: hidden;">
+      <div id="control-btn" style="position: relative;">
         <div class="btn-id" style="position: absolute;">
           <div class="btn-number">1</div>
           <div class="btn-number">2</div>
@@ -615,6 +615,7 @@
           <div class="btn-number">9</div>
           <div class="btn-number">10</div>
         </div>
+        <div id="btn-row" style="overflow: hidden; height: 600px;"></div>
       </div>
       <div class="btn-setting">
         <button onclick="applySettings()" class="setting-button">Áp dụng</button>
@@ -631,7 +632,6 @@
     const homecontrol = document.getElementById('homecontrol')
     const wifisetup = document.getElementById('wifisetup')
     const ctrBtn = document.getElementById("control-btn");
-
     //-----------Hàm khởi tạo đối tượng request----------------
     function create_obj() {
       var td = navigator.appName;
@@ -669,7 +669,7 @@
       xhttp.open("GET", "/getSTATUSPAGE2", true);
       xhttp.onreadystatechange = process_statuspage2;
       xhttp.send();
-
+      
     }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
@@ -732,33 +732,6 @@
     function updateLedstatus(D1, D2) {
       document.getElementById("clock-display").innerText = D1;
     }
-    // function updatePage2Status(id, arr) {
-    //   const modeId = { "A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "J": 9 }
-    //   const modeDropdown = document.getElementById("mode-dropdown").value;
-    //   const dataIndex = modeId[id]
-    //   const dropdowns = document.querySelectorAll('.dropdown')
-    //   let list = []
-    //   let index = 0
-    //   let value = 0
-    //   const modeMappings = { "B": 40, "C": 80, "D": 120, "E": 160, "F": 200, "G": 240, "H": 280, "I": 320, "J": 360 };
-    //   if (modeMappings.hasOwnProperty(modeDropdown)) {
-    //     value = modeMappings[modeDropdown];
-    //   }
-    //   for (let i = value; i < value + 40; i++) {
-    //     list.push(dropdowns[i])
-    //   }
-    //   const numRows = 10
-    //   const numCols = 4
-    //   for (let col = 0; col < numCols; col++) {
-    //     for (let row = 0; row < numRows; row++) {
-    //       const dropdownIndex = row * numCols + col
-    //       if (arr[dataIndex] && arr[dataIndex].length === 40) {
-    //         list[dropdownIndex].value = arr[dataIndex][index]
-    //         index++
-    //       }
-    //     }
-    //   }
-    // }
     function updatePage1Status(dataArr, cbArr) {
       dataArr.forEach((e, index) => {
         let runTimeHourInput = document.getElementById(`run-time-hour-${index}`);
@@ -839,6 +812,7 @@
       const mode = document.getElementById("mode-dropdown")
       mode.value = "A"
       process_statuspage2("A")
+      
     }
     function applySettings() {
       const modeDropdown = document.getElementById("mode-dropdown").value;
@@ -895,7 +869,7 @@
         if (containerId === 'A') {
           settingsContainer.style.display = 'grid';
         }
-        document.getElementById('control-btn').appendChild(settingsContainer);
+        document.getElementById('btn-row').appendChild(settingsContainer);
       }
     }
     function deleteBtnSettingRow() {
@@ -1092,12 +1066,13 @@
       if (password.value === 'iot1234') {
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
-        getstatuspage1()
+        
         getstatuspage2()
       } else {
         toast({ title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000 })
       }
     })
+    window.onload = getstatuspage1()
     // Hàm ẩn hiện mật khẩu
     function togglePasswordVisibility() {
       var passwordInput = document.getElementById("password");
