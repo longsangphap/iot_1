@@ -85,12 +85,22 @@
       transform: scale(1.5)
     }
 
+    .time-status {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      width: 100%;
+    }
     .time-input {
       padding: 8px 20px;
       border-radius: 5px;
-      border: 1px solid #ccc
+      border: 1px solid #ccc;
+      width: 20%;
     }
-
+    .time {
+      width: 100%;
+      padding: 5px 0;
+    }
     .setting-button {
       padding: 8px 20px;
       border: none;
@@ -552,12 +562,24 @@
       <div class="container">
         <div class="clock-container">
           <div id="clock-display">12:00</div>
+          <div id="date-display">12:00</div>
           <div class="clock-setup">
             <label for="hour">Cài đặt thời gian</label>
             <br>
-            <input class="time-input" type="number" id="hour" placeholder="Giờ" min="0" max="23">
-            <span>:</span>
-            <input class="time-input" type="number" id="minute" placeholder="Phút" min="0" max="59">
+            <div class="time-status">
+              <div class="time">
+                <input class="time-input" type="number" id="hour" placeholder="Giờ" min="0" max="23">
+                <span>:</span>
+                <input class="time-input" type="number" id="minute" placeholder="Phút" min="0" max="59">
+              </div>
+              <div class="time">
+                <input class="time-input" type="number" id="day" placeholder="Ngày" min="0">
+                <span>:</span>
+                <input class="time-input" type="number" id="month" placeholder="Tháng" min="1" max="12">
+                <span>:</span>
+                <input class="time-input" type="number" id="year" placeholder="Năm">
+              </div>
+            </div>
             <button onclick="updateClock()" class="setting-button">Cập nhật</button>
           </div>
         </div>
@@ -669,7 +691,7 @@
       xhttp.open("GET", "/getSTATUSPAGE2", true);
       xhttp.onreadystatechange = process_statuspage2;
       xhttp.send();
-      
+
     }
     //------Update trạng thái led tín hiệu lên panel điều khiển----
     function process_statusD() {
@@ -812,7 +834,7 @@
       const mode = document.getElementById("mode-dropdown")
       mode.value = "A"
       process_statuspage2("A")
-      
+
     }
     function applySettings() {
       const modeDropdown = document.getElementById("mode-dropdown").value;
@@ -898,21 +920,27 @@
     function updateClock() {
       const hourInput = document.getElementById("hour").value;
       const minuteInput = document.getElementById("minute").value;
+      const dayInput = document.getElementById("day").value;
+      const monthInput = document.getElementById("month").value;
+      const yearInput = document.getElementById("year").value;
 
       const isValidInput = /^\d{1,2}$/.test(hourInput) && /^\d{1,2}$/.test(minuteInput);
-
-      if (isValidInput) {
+      const isValidDate = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(19|20)\d{2}$/.test(`${dayInput}/${monthInput}/${yearInput}`);
+      if (isValidInput && isValidDate) {
         const formattedHour = hourInput.padStart(2, "0");
         const formattedMinute = minuteInput.padStart(2, "0");
         const formattedTime = `${formattedHour}:${formattedMinute}`;
-
+        const formattedDay = dayInput.padStart(2, "0");
+        const formattedMonth = monthInput.padStart(2, "0");
+        const formattedDate = `${formattedDay}/${formattedMonth}/${yearInput}`
         document.getElementById("clock-display").innerText = formattedTime;
+        document.getElementById("date-display").innerText = formattedDate;
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/send_settinghour?hour=" + hourInput + "&minute=" + minuteInput + "&minute=", true);
+        xhttp.open("GET", "/send_settinghour?hour=" + hourInput + "&minute=" + minuteInput + "&day=" + dayInput + "&month=" + monthInput + "&year=" + yearInput, true);
         xhttp.onreadystatechange = process;
         xhttp.send();
       } else {
-        toast({ title: "Lỗi", message: "Vui lòng nhập giờ và phút hợp lệ", type: "error", duration: 5000 })
+        toast({ title: "Lỗi", message: "Vui lòng nhập thời gian hợp lệ", type: "error", duration: 5000 })
       }
 
     }
@@ -934,8 +962,8 @@
 
       settingRow.innerHTML = `
         <div class="setting-number">${index + 1}</div>
-        <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 onkeydown="excludeKeys(event, ['Backspace']);;">
-        <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59 onkeydown="excludeKeys(event, ['Backspace']);;">
+        <input class="setting-input" type="number" id="run-time-hour-${index}" placeholder="Giờ" min=0 max=23 >
+        <input class="setting-input" type="number" id="run-time-minute-${index}" placeholder="Phút" min=0 max=59>
         <input class="setting-input" type="text" id="repeat-${index}" placeholder="Ngày" style="width:20%;" oninput="validateNumberInput(this)">
         <select class="setting-input mode-select" id="mode-${index}" style="width:20%">${createmode()}</select>
         <div style="width:20%">
@@ -1031,6 +1059,12 @@
           toast({ title: "Lỗi", message: `Vui lòng điền đầy đủ thông tin cài đặt ${id + 1}`, type: "error", duration: 5000 })
           return
         }
+        const isValidTime = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(`${runTimeHourArray[id]}:${runTimeMinuteArray[id]}`);
+
+        if (isValidTime === false) {
+          toast({ title: "Lỗi", message: `Vui lòng nhập đúng định dạng thời gian của cài đặt ${id + 1}`, type: "error", duration: 5000 })
+          return
+        }
         var chars = repeatCountArray[id].split('').map(Number);
         for (let i = 0; i < chars.length; i++) {
           if (chars[i] == 0 || chars[i] == 1 || chars[i] == 9) {
@@ -1051,7 +1085,7 @@
         }
         // Gửi thông tin checkbox
         send_check()
-        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id]}:${runTimeMinuteArray[id]}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000 })
+        toast({ title: "Cập nhật thành công", message: `Cài đặt ${id + 1} - Thời gian ${runTimeHourArray[id].padStart(2, "0")}:${runTimeMinuteArray[id].padStart(2, "0")}, Mode ${modeArray[id]}, Thứ ${chars}`, type: "success", duration: 5000 })
       })
     }
     // Tạo 10 phần cài đặt khi trang web được tải
@@ -1066,7 +1100,7 @@
       if (password.value === 'iot1234') {
         login_page.style.display = 'none';
         homecontrol.style.display = "block";
-        
+
         getstatuspage2()
       } else {
         toast({ title: "Lỗi", message: "Mật khẩu không đúng hoặc chưa nhập mật khẩu", type: "error", duration: 3000 })
@@ -1083,16 +1117,6 @@
       } else {
         passwordInput.type = "password";
         toggleIcon.textContent = "Hiện"; // Hiển thị biểu tượng đóng mắt
-      }
-    }
-    // Hàm cho phép nhấn phím backspace
-    function excludeKeys(event, allowedKeys) {
-      const pressedKey = event.key;
-
-      // Check if the pressed key is in the allowedKeys array
-      if (!allowedKeys.includes(pressedKey)) {
-        // If not, prevent the default behavior
-        event.preventDefault();
       }
     }
 
